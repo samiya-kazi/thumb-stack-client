@@ -12,7 +12,8 @@ export function saveThumbnail (thumbnailElements, backgroundColor, userId, image
     body: JSON.stringify(body),
     headers: {
       'Content-type': 'application/json'
-    }
+    },
+    credentials: 'include',
   }
 
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/thumbnail`, options)
@@ -22,7 +23,7 @@ export function saveThumbnail (thumbnailElements, backgroundColor, userId, image
 
 
 export function getThumbnails (userId) {
-  return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/thumbnail/${userId}`)
+  return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/thumbnail/${userId}`, { credentials: 'include'})
     .then(response => response.json())
     .catch(err => console.log(err));
 }
@@ -40,7 +41,8 @@ export function updateThumbnail (id, thumbnailElements, backgroundColor, imageSr
     body: JSON.stringify(body),
     headers: {
       'Content-type': 'application/json'
-    }
+    },
+    credentials: 'include',
   }
 
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/thumbnail?tid=${id}`, options)
@@ -54,6 +56,7 @@ export function updateThumbnail (id, thumbnailElements, backgroundColor, imageSr
 export function deleteThumbnail (id) {
   const options = {
     method: 'DELETE',
+    credentials: 'include'
   }
 
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/thumbnail?tid=${id}`, options)
