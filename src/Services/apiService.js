@@ -66,9 +66,13 @@ export function deleteThumbnail (id) {
 
 
 export function getUserInfo () {
+  const accessToken = localStorage.getItem('accessToken');
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/user`,{
      method: 'GET',
-     credentials: 'include'
+     credentials: 'include',
+     headers: {
+      "Authorization": accessToken
+    }
    })
    .then(response => response.json())
    .catch(err => console.error(err));
@@ -76,11 +80,20 @@ export function getUserInfo () {
 
 
 export function logout () {
+  const token = localStorage.getItem(tokenName);
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/logout`, {
      method: 'GET',
-     credentials: 'include'
+     credentials: 'include',
+     headers: {
+      "Authorization": token
+    }
    })
-   .then(response => response)
+   .then(response =>{ 
+      if (response.ok) {
+        localStorage.removeItem('accessToken');
+        return response.json();
+      }
+    })
    .catch(err => console.error(err));
 };
 
@@ -99,8 +112,10 @@ export function login (user) {
 
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/login`, options)
     .then(response => {
-      if(response.ok)
-        return response.json()
+      if(response.ok) {
+        localStorage.setItem('accessToken', response.headers.get('Authorization'));
+        return response.json();
+      }
     })
     .catch(err => console.error(err));
 };
@@ -125,8 +140,10 @@ export function register (registerInfo) {
 
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/register`, options)
     .then(response => {
-      if(response.ok)
+      if(response.ok) {
+        localStorage.setItem('accessToken', response.headers.get('Authorization'));
         return response.json();
+      }
     })
     .catch(err => console.error(err));
 };
