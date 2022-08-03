@@ -83,7 +83,7 @@ export function getUserInfo () {
 
 
 export function logout () {
-  const token = localStorage.getItem(tokenName);
+  const token = localStorage.getItem('accessToken');
   return fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/logout`, {
      method: 'GET',
      credentials: 'include',
